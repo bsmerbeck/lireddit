@@ -8,16 +8,16 @@ const core_1 = require("@mikro-orm/core");
 const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
+const apollo_server_core_1 = require("apollo-server-core");
 const type_graphql_1 = require("type-graphql");
 const hello_1 = require("./resolvers/hello");
-const post_1 = require("./resolvers/post");
-const apollo_server_core_1 = require("apollo-server-core");
+const user_1 = require("./resolvers/user");
 const main = async () => {
     const orm = await core_1.MikroORM.init(mikro_orm_config_1.default);
     orm.getMigrator().up();
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await type_graphql_1.buildSchema({
-            resolvers: [hello_1.HelloResolver, post_1.PostResolver],
+            resolvers: [hello_1.HelloResolver, user_1.UserResolver],
             validate: false,
         }),
         context: () => ({ em: orm.em }),
