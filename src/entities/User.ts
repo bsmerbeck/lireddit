@@ -1,29 +1,41 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
 import { Field, ObjectType } from "type-graphql";
+import {
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Entity,
+  Column,
+  BaseEntity,
+  OneToMany,
+} from "typeorm";
+import { Post } from "./Post";
 
 @ObjectType()
 @Entity()
-export class User {
-    @Field()
-    @PrimaryKey()
-    id!: number;
+export class User extends BaseEntity {
+  @Field()
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Field(() => String)
-    @Property({type: 'date'})
-    createdAt = new Date();
+  @Field()
+  @Column({ unique: true })
+  username!: string;
 
-    @Field(() => String)
-    @Property({ type: 'date', onUpdate: () => new Date() })
-    updatedAt = new Date()
+  @Field()
+  @Column({ unique: true })
+  email!: string;
 
-    @Field()
-    @Property({type: 'text', unique: true})
-    username!: string;
+  @Column()
+  password!: string;
 
-    @Field()
-    @Property({type: 'text', unique: true})
-    email!: string;
+  @OneToMany(() => Post, (post) => post.creator) // note: we will create author property in the Photo class below
+  posts: Post[];
 
-    @Property({type: 'text'})
-    password!: string;
+  @Field(() => String)
+  @CreateDateColumn({ type: "date" })
+  createdAt: Date;
+
+  @Field(() => String)
+  @UpdateDateColumn({ type: "date" })
+  updatedAt = Date;
 }
