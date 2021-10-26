@@ -14,9 +14,10 @@ import { PostResolver } from "./resolvers/post";
 import { createConnection } from "typeorm";
 import { User } from "./entities/User";
 import { Post } from "./entities/Post";
+import path from "path";
 
 const main = async () => {
-  await createConnection({
+  const conn = await createConnection({
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -25,8 +26,11 @@ const main = async () => {
     database: "lireddit2",
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User],
   });
+
+  await conn.runMigrations();
 
   const app = express();
 

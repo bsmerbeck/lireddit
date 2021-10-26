@@ -37,10 +37,10 @@ export class Post extends BaseEntity {
   creator: User;
 
   @Field(() => String)
-  @CreateDateColumn({ type: "date" })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field(() => String)
-  @UpdateDateColumn({ type: "date" })
+  @UpdateDateColumn()
   updatedAt: Date;
 }
